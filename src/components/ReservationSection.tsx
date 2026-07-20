@@ -445,28 +445,26 @@ export default function ReservationSection({
             </div>
 
             {/* STEP 4: TIME SLOTS GRID */}
-            <div className="bg-zinc-900/60 border border-zinc-800 rounded-3xl p-6" id="slots-selector-card">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-orange-500" />
-                  <span className="text-sm font-black uppercase tracking-wider text-white">4. Selecione o Horário</span>
-                </div>
-                {/* Legends */}
-                <div className="flex gap-3 text-[10px] text-gray-400 font-semibold">
-                  <div className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded bg-zinc-800 inline-block border border-zinc-700" />
-                    <span>Livre</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded bg-red-500/20 inline-block border border-red-500/30" />
-                    <span>Ocupado</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded bg-zinc-700/60 inline-block" />
-                    <span>Bloqueado</span>
-                  </div>
-                </div>
-              </div>
+            {/* Legends */}
+<div className="flex gap-3 text-[10px] text-gray-400 font-semibold">
+  {/* LIXRE - Verde */}
+  <div className="flex items-center gap-1">
+    <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+    <span>Livre</span>
+  </div>
+  
+  {/* OCUPADO - Vermelho */}
+  <div className="flex items-center gap-1">
+    <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />
+    <span>Ocupado</span>
+  </div>
+  
+  {/* BLOQUEADO - Amarelo/Laranja */}
+  <div className="flex items-center gap-1">
+    <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
+    <span>Bloqueado</span>
+  </div>
+</div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {TIME_SLOTS.map((slot) => {
