@@ -22,17 +22,15 @@ export default function ReservationSection({
   googleToken,
   handleGoogleLogin,
 }: ReservationSectionProps) {
-  // Calendar: next 14 days starting from 2026-07-17
+  // Calendar: next 14 days starting from today
   const calendarDates = useMemo(() => {
     const dates = [];
-    const baseDate = new Date('2026-07-17T00:00:00');
     const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
     
     for (let i = 0; i < 14; i++) {
-      const currentDate = new Date(baseDate);
-      currentDate.setDate(baseDate.getDate() + i);
+      const dateString = getRelativeDateString(i);
+      const currentDate = new Date(dateString + 'T12:00:00'); // Noon to avoid timezone shifts
       
-      const dateString = currentDate.toISOString().split('T')[0];
       const dayName = weekDays[currentDate.getDay()];
       const dayNum = currentDate.getDate();
       const monthName = currentDate.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '');
@@ -335,13 +333,13 @@ export default function ReservationSection({
                       }`}
                       id={`date-btn-${item.dateString}`}
                     >
-                      <span className={`text-[10px] uppercase font-bold tracking-widest ${isSelected ? 'text-black font-extrabold' : 'text-gray-500'}`}>
+                      <span className={`text-[10px] uppercase font-bold tracking-widest notranslate ${isSelected ? 'text-black font-extrabold' : 'text-gray-500'}`}>
                         {item.dayName}
                       </span>
                       <span className="text-2xl font-black my-0.5 leading-none">
                         {item.dayNum}
                       </span>
-                      <span className={`text-[9px] uppercase font-bold ${isSelected ? 'text-black' : 'text-gray-400'}`}>
+                      <span className={`text-[9px] uppercase font-bold notranslate ${isSelected ? 'text-black' : 'text-gray-400'}`}>
                         {item.monthName}
                       </span>
                     </button>

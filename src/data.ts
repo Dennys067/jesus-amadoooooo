@@ -232,11 +232,14 @@ export const TOURNAMENTS: Tournament[] = [
   }
 ];
 
-// Helper to get formatted dates relative to today's local time (2026-07-17)
+// Helper to get formatted dates relative to today's local time (dynamic)
 export const getRelativeDateString = (offsetDays: number): string => {
-  const baseDate = new Date('2026-07-17T00:00:00');
-  baseDate.setDate(baseDate.getDate() + offsetDays);
-  return baseDate.toISOString().split('T')[0];
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 };
 
 export const getInitialBookings = (): Booking[] => {

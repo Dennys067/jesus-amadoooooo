@@ -800,7 +800,7 @@ export default function AdminSection({
                       return (
                         <div key={day.dateString} className="flex-1 bg-zinc-950/40 border border-zinc-850 p-4 rounded-2xl min-w-[150px] space-y-3">
                           <div className="text-center border-b border-zinc-800 pb-2 bg-zinc-900/50 p-2 rounded-xl">
-                            <span className="text-[10px] text-orange-400 font-extrabold uppercase tracking-wider block">
+                            <span className="text-[10px] text-orange-400 font-extrabold uppercase tracking-wider block notranslate">
                               {day.dayName}
                             </span>
                             <span className="text-xs font-black text-white">
