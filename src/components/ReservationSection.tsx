@@ -478,7 +478,7 @@ export default function ReservationSection({
                   let subtitle = 'Disponível';
 
                   if (status.isBlocked) {
-                    buttonClass = 'bg-zinc-800/40 border-transparent text-gray-600 cursor-not-allowed';
+                    buttonClass = 'bg-amber-500/10 border-amber-500/20 text-amber-500/80 cursor-not-allowed';
                     isDisabled = true;
                     subtitle = 'Bloqueado';
                   } else if (status.isBooked) {
