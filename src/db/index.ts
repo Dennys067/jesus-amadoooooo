@@ -5,7 +5,13 @@ import * as schema from './schema.ts';
 const { Pool } = pkg;
 
 export const createPool = () => {
-  const isSslEnabled = process.env.SQL_SSL === 'true' || !process.env.SQL_HOST?.includes('localhost');
+  const host = process.env.SQL_HOST;
+  const isSslEnabled = process.env.SQL_SSL === 'true' || (
+    process.env.SQL_SSL !== 'false' &&
+    !!host &&
+    !host.includes('localhost') &&
+    !host.includes('127.0.0.1')
+  );
   return new Pool({
     host: process.env.SQL_HOST,
     user: process.env.SQL_USER,
