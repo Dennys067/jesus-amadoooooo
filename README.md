@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # 🏟️ Arena Prime - Sistema de Reserva e Gestão de Quadras de Areia
 
 Bem-vindo ao **Arena Prime**, uma aplicação full-stack de alta performance projetada para simplificar a reserva de quadras esportivas (Beach Tennis, Vôlei de Praia e Futvôlei) e automatizar o controle gerencial completo do estabelecimento. 
@@ -156,3 +157,6 @@ Qualquer pessoa que clonar o projeto terá a garantia de uma execução segura e
 =======
 # jesus-amadoooooo
 >>>>>>> c599f71abf7030d1447af38173e9dae864a67ead
+=======
+
+>>>>>>> 05f6bbc3cf31e146c0e9b184cfaa59c19de62472
