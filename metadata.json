@@ -1,0 +1,6 @@
+{
+  "name": "Arena Prime",
+  "description": "Arena Prime - Agendamento de quadras de Beach Tennis, Vôlei de Praia e Futvôlei, além do cardápio digital do nosso restaurante em Glória de Dourados/MS.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
