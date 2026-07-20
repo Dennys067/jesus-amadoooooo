@@ -276,7 +276,7 @@ async function startServer() {
       const data = await db.select().from(tournaments);
       const mapped = data.map(t => ({
         ...t,
-        categories: t.categories.split(','),
+        categories: (t.categories || '').split(','),
       }));
       res.json(mapped);
     } catch (err: any) {

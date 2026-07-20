@@ -400,8 +400,11 @@ export default function AdminSection({
 
   // Stats calculation
   const stats = useMemo(() => {
-    const active = bookings.filter(b => b.status !== 'cancelled' && !b.isBlockedSlot);
-    const blocked = bookings.filter(b => b.status !== 'cancelled' && b.isBlockedSlot);
+    if (!Array.isArray(bookings)) {
+      return { activeCount: 0, blockedCount: 0, earnings: 0 };
+    }
+    const active = bookings.filter(b => b && b.status !== 'cancelled' && !b.isBlockedSlot);
+    const blocked = bookings.filter(b => b && b.status !== 'cancelled' && b.isBlockedSlot);
     const totalEarnings = active.reduce((acc, curr) => {
       const court = courtsMap[curr.courtId];
       return acc + (court ? court.priceHourly : 0);
@@ -418,12 +421,12 @@ export default function AdminSection({
   const selectedDaySlots = useMemo(() => {
     const slots: Record<string, Booking | null> = {};
     TIME_SLOTS.forEach(slot => {
-      const match = bookings.find(
-        b => b.date === adminDate && 
+      const match = Array.isArray(bookings) ? bookings.find(
+        b => b && b.date === adminDate && 
              b.courtId === adminCourtId && 
              b.timeSlot === slot && 
              b.status !== 'cancelled'
-      );
+      ) : null;
       slots[slot] = match || null;
     });
     return slots;
@@ -431,16 +434,18 @@ export default function AdminSection({
 
   // Filtered overall booking lists for bottom table
   const filteredBookingsList = useMemo(() => {
+    if (!Array.isArray(bookings)) return [];
     return bookings.filter(b => {
-      const nameMatch = b.customerName.toLowerCase().includes(searchQuery.toLowerCase());
-      const phoneMatch = b.customerPhone.includes(searchQuery);
-      const sportMatch = b.sport.toLowerCase().includes(searchQuery.toLowerCase());
-      const reasonMatch = b.blockReason?.toLowerCase().includes(searchQuery.toLowerCase()) || false;
-      const courtMatch = b.courtName.toLowerCase().includes(searchQuery.toLowerCase());
-      const dateMatch = b.date.includes(searchQuery);
+      if (!b) return false;
+      const nameMatch = (b.customerName || '').toLowerCase().includes(searchQuery.toLowerCase());
+      const phoneMatch = (b.customerPhone || '').includes(searchQuery);
+      const sportMatch = (b.sport || '').toLowerCase().includes(searchQuery.toLowerCase());
+      const reasonMatch = (b.blockReason || '').toLowerCase().includes(searchQuery.toLowerCase());
+      const courtMatch = (b.courtName || '').toLowerCase().includes(searchQuery.toLowerCase());
+      const dateMatch = (b.date || '').includes(searchQuery);
 
       return (nameMatch || phoneMatch || sportMatch || reasonMatch || courtMatch || dateMatch);
-    }).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    }).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
   }, [bookings, searchQuery]);
 
   const openActionModal = (slot: string, type: 'booking' | 'block') => {

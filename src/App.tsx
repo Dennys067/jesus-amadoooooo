@@ -35,24 +35,65 @@ export default function App() {
   const loadAllData = async () => {
     try {
       const [resCourts, resBookings, resMenu, resTournaments, resGallery, resSettings] = await Promise.all([
-        fetch('/api/courts'),
-        fetch('/api/bookings'),
-        fetch('/api/menu'),
-        fetch('/api/tournaments'),
-        fetch('/api/gallery'),
-        fetch('/api/settings')
+        fetch('/api/courts').catch(err => ({ ok: false, json: () => Promise.resolve([]) } as any)),
+        fetch('/api/bookings').catch(err => ({ ok: false, json: () => Promise.resolve([]) } as any)),
+        fetch('/api/menu').catch(err => ({ ok: false, json: () => Promise.resolve([]) } as any)),
+        fetch('/api/tournaments').catch(err => ({ ok: false, json: () => Promise.resolve([]) } as any)),
+        fetch('/api/gallery').catch(err => ({ ok: false, json: () => Promise.resolve([]) } as any)),
+        fetch('/api/settings').catch(err => ({ ok: false, json: () => Promise.resolve({}) } as any))
       ]);
 
-      if (resCourts.ok) setCourts(await resCourts.json());
-      if (resBookings.ok) setBookings(await resBookings.json());
-      if (resMenu.ok) setMenuItems(await resMenu.json());
-      if (resTournaments.ok) setTournaments(await resTournaments.json());
-      if (resGallery.ok) setGalleryItems(await resGallery.json());
+      if (resCourts.ok) {
+        try {
+          const data = await resCourts.json();
+          if (Array.isArray(data)) setCourts(data);
+        } catch (e) {
+          console.error('Error parsing courts JSON:', e);
+        }
+      }
+      if (resBookings.ok) {
+        try {
+          const data = await resBookings.json();
+          if (Array.isArray(data)) setBookings(data);
+        } catch (e) {
+          console.error('Error parsing bookings JSON:', e);
+        }
+      }
+      if (resMenu.ok) {
+        try {
+          const data = await resMenu.json();
+          if (Array.isArray(data)) setMenuItems(data);
+        } catch (e) {
+          console.error('Error parsing menu JSON:', e);
+        }
+      }
+      if (resTournaments.ok) {
+        try {
+          const data = await resTournaments.json();
+          if (Array.isArray(data)) setTournaments(data);
+        } catch (e) {
+          console.error('Error parsing tournaments JSON:', e);
+        }
+      }
+      if (resGallery.ok) {
+        try {
+          const data = await resGallery.json();
+          if (Array.isArray(data)) setGalleryItems(data);
+        } catch (e) {
+          console.error('Error parsing gallery JSON:', e);
+        }
+      }
       if (resSettings.ok) {
-        const settings = await resSettings.json();
-        if (settings.hero_image) setHeroImage(settings.hero_image);
-        if (settings.restaurant_image) setRestaurantImage(settings.restaurant_image);
-        if (settings.logo_image) setLogoImage(settings.logo_image);
+        try {
+          const settings = await resSettings.json();
+          if (settings) {
+            if (settings.hero_image) setHeroImage(settings.hero_image);
+            if (settings.restaurant_image) setRestaurantImage(settings.restaurant_image);
+            if (settings.logo_image) setLogoImage(settings.logo_image);
+          }
+        } catch (e) {
+          console.error('Error parsing settings JSON:', e);
+        }
       }
     } catch (err) {
       console.error('Failed to load full-stack database states:', err);
@@ -141,14 +182,27 @@ export default function App() {
 
   const updateCourts = async (newCourts: Court[]) => {
     try {
-      setCourts(newCourts);
-      for (const court of newCourts) {
+      // Find modified/added courts
+      const changed = newCourts.filter(nc => {
+        const oc = courts.find(c => c.id === nc.id);
+        if (!oc) return true;
+        return oc.name !== nc.name ||
+               oc.type !== nc.type ||
+               JSON.stringify(oc.sports) !== JSON.stringify(nc.sports) ||
+               oc.description !== nc.description ||
+               oc.priceHourly !== nc.priceHourly ||
+               oc.image !== nc.image;
+      });
+
+      for (const court of changed) {
         await fetch('/api/courts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(court),
         });
       }
+
+      setCourts(newCourts);
       await loadAllData();
     } catch (err) {
       console.error('Error updating courts:', err);
@@ -157,15 +211,35 @@ export default function App() {
 
   const updateMenuItems = async (newMenu: MenuItem[]) => {
     try {
-      setMenuItems(newMenu);
-      // Clean delete or full update
-      for (const item of newMenu) {
+      // 1. Find deleted items on the backend
+      const deletedItems = menuItems.filter(item => !newMenu.some(newItem => newItem.id === item.id));
+      for (const item of deletedItems) {
+        await fetch(`/api/menu/${item.id}`, {
+          method: 'DELETE',
+        });
+      }
+
+      // 2. Find changed/added items
+      const changedItems = newMenu.filter(newItem => {
+        const oldItem = menuItems.find(item => item.id === newItem.id);
+        if (!oldItem) return true;
+        return oldItem.name !== newItem.name ||
+               oldItem.description !== newItem.description ||
+               oldItem.price !== newItem.price ||
+               oldItem.category !== newItem.category ||
+               oldItem.image !== newItem.image ||
+               oldItem.tag !== newItem.tag;
+      });
+
+      for (const item of changedItems) {
         await fetch('/api/menu', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(item),
         });
       }
+
+      setMenuItems(newMenu);
       await loadAllData();
     } catch (err) {
       console.error('Error updating menu:', err);
@@ -174,14 +248,36 @@ export default function App() {
 
   const updateTournaments = async (newTour: Tournament[]) => {
     try {
-      setTournaments(newTour);
-      for (const t of newTour) {
+      // 1. Find deleted tournaments on the backend
+      const deleted = tournaments.filter(t => !newTour.some(nt => nt.id === t.id));
+      for (const t of deleted) {
+        await fetch(`/api/tournaments/${t.id}`, {
+          method: 'DELETE',
+        });
+      }
+
+      // 2. Find changed/added tournaments
+      const changed = newTour.filter(nt => {
+        const ot = tournaments.find(t => t.id === nt.id);
+        if (!ot) return true;
+        return ot.title !== nt.title ||
+               ot.date !== nt.date ||
+               JSON.stringify(ot.categories) !== JSON.stringify(nt.categories) ||
+               ot.description !== nt.description ||
+               ot.price !== nt.price ||
+               ot.status !== nt.status ||
+               ot.image !== nt.image;
+      });
+
+      for (const t of changed) {
         await fetch('/api/tournaments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(t),
         });
       }
+
+      setTournaments(newTour);
       await loadAllData();
     } catch (err) {
       console.error('Error updating tournaments:', err);
@@ -190,14 +286,33 @@ export default function App() {
 
   const updateGalleryItems = async (newGallery: GalleryItem[]) => {
     try {
-      setGalleryItems(newGallery);
-      for (const g of newGallery) {
+      // 1. Find deleted items on the backend
+      const deleted = galleryItems.filter(g => !newGallery.some(ng => ng.id === g.id));
+      for (const g of deleted) {
+        await fetch(`/api/gallery/${g.id}`, {
+          method: 'DELETE',
+        });
+      }
+
+      // 2. Find changed/added items
+      const changed = newGallery.filter(ng => {
+        const og = galleryItems.find(g => g.id === ng.id);
+        if (!og) return true;
+        return og.title !== ng.title ||
+               og.src !== ng.src ||
+               og.alt !== ng.alt ||
+               og.category !== ng.category;
+      });
+
+      for (const g of changed) {
         await fetch('/api/gallery', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(g),
         });
       }
+
+      setGalleryItems(newGallery);
       await loadAllData();
     } catch (err) {
       console.error('Error updating gallery:', err);
