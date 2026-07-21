@@ -140,7 +140,7 @@ export default function AdminSection({
   const [galleryTitle, setGalleryTitle] = useState('');
   const [gallerySrc, setGallerySrc] = useState('');
   const [galleryAlt, setGalleryAlt] = useState('');
-  const [galleryCategory, setGalleryCategory] = useState<'arena' | 'sports' | 'food'>('arena');
+  const [galleryCategory, setGalleryCategory] = useState<'arena' | 'sports' | 'kitchen' | 'tables'>('arena');
 
   // VISUAL IDENTITY / CORE SETTINGS STATE
   const [tempLogoImage, setTempLogoImage] = useState(logoImage || '');
@@ -1651,9 +1651,12 @@ export default function AdminSection({
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-2 left-2">
-                      <span className="text-[9px] font-black uppercase bg-orange-500 text-black px-2 py-0.5 rounded-full font-sans">
-                        {item.category === 'arena' ? 'Arena' : item.category === 'sports' ? 'Esporte' : 'Restaurante'}
-                      </span>
+                      <span className="text-[9px] font-black uppercase bg-orange-500 text-black px-2 py-0.5 rounded-full">
+                      {item.category === 'arena' && 'Arena'}
+                      {item.category === 'sports' && 'Esportes'}
+                      {item.category === 'kitchen' && 'Cozinha'}
+                      {item.category === 'tables' && 'Mesas'}
+                     </span>
                     </div>
                   </div>
 
@@ -2522,7 +2525,8 @@ export default function AdminSection({
                 >
                   <option value="arena">A Arena (Instalações / Recepção)</option>
                   <option value="sports">Esportes (Ação / Atletas / Partidas)</option>
-                  <option value="food">Restaurante (Porções / Drinks / Pratos)</option>
+                  <option value="kitchen">Cozinha (Porções / Drinks / Pratos)</option>
+                  <option value="tables">Mesas (Galera / Confraternização)</option>
                 </select>
               </div>
 

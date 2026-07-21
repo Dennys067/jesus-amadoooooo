@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image as ImageIcon, Camera, Eye, X } from 'lucide-react';
+import { Camera, Eye, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GalleryItem } from '../types';
 
@@ -8,14 +8,15 @@ interface GallerySectionProps {
 }
 
 export default function GallerySection({ galleryItems }: GallerySectionProps) {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'arena' | 'sports' | 'food'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'arena' | 'sports' | 'kitchen' | 'tables'>('all');
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   const filters = [
     { id: 'all', label: 'Tudo' },
     { id: 'arena', label: 'A Arena' },
     { id: 'sports', label: 'Esportes' },
-    { id: 'food', label: 'Restaurante' },
+    { id: 'kitchen', label: 'Cozinha' },
+    { id: 'tables', label: 'Mesas' },
   ];
 
   const filteredItems = galleryItems.filter(
@@ -36,7 +37,7 @@ export default function GallerySection({ galleryItems }: GallerySectionProps) {
             ÁLBUM DE <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-400 to-yellow-300">FOTOS</span>
           </h2>
           <p className="text-gray-400 text-xs sm:text-sm mt-2">
-            Confira imagens reais da Arena Prime: nossas quadras, o clima contagiante das partidas e os pratos incríveis servidos em nosso restaurante.
+            Confira imagens reais da Arena Prime: nossas quadras, o clima contagiante das partidas, nossa cozinha e os melhores momentos nas mesas.
           </p>
         </div>
 
@@ -85,7 +86,10 @@ export default function GallerySection({ galleryItems }: GallerySectionProps) {
                 {/* Text details on Hover */}
                 <div className="absolute bottom-0 left-0 right-0 p-5 z-10 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                   <span className="text-[9px] font-black uppercase bg-orange-500 text-black px-2 py-0.5 rounded-full inline-block mb-1.5 font-sans">
-                    {item.category === 'arena' ? 'Arena' : item.category === 'sports' ? 'Esporte' : 'Restaurante'}
+                    {item.category === 'arena' && 'Arena'}
+                    {item.category === 'sports' && 'Esportes'}
+                    {item.category === 'kitchen' && 'Cozinha'}
+                    {item.category === 'tables' && 'Mesas'}
                   </span>
                   <h4 className="text-sm font-black uppercase text-white tracking-wide truncate">
                     {item.title}
