@@ -54,7 +54,7 @@ export interface GalleryItem {
   id: string;
   src: string;
   alt: string;
-  category: 'arena' | 'sports' | 'food';
+  category: 'arena' | 'sports' | 'kitchen' | 'tables';
   title: string;
 }
 
