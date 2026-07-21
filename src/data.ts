@@ -1,69 +1,7 @@
 import { Court, MenuItem, Tournament, Booking, GalleryItem } from './types';
 
 export const INITIAL_GALLERY: GalleryItem[] = [
-  {
-    id: 'g-1',
-    src: '/src/assets/images/arena_prime_hero_1784287633068.jpg',
-    alt: 'Quadras de Areia Arena Prime ao Entardecer',
-    category: 'arena',
-    title: 'Nossas Quadras ao Entardecer'
-  },
-  {
-    id: 'g-2',
-    src: '/src/assets/images/arena_prime_atleta_bt_1784289981099.jpg',
-    alt: 'Jogador focado em partida intensa de Beach Tennis',
-    category: 'sports',
-    title: 'Atleta de Beach Tennis'
-  },
-  {
-    id: 'g-3',
-    src: '/src/assets/images/arena_prime_casal_proprietario_1784289995907.jpg',
-    alt: 'Proprietários recebendo os clientes na recepção decorada',
-    category: 'arena',
-    title: 'Fundadores Arena Prime'
-  },
-  {
-    id: 'g-4',
-    src: '/src/assets/images/arena_prime_torneio_podio_1784290009809.jpg',
-    alt: 'Premiação de torneio com troféu exclusivo de campeão no pódio',
-    category: 'sports',
-    title: 'Campeões Arena Prime'
-  },
-  {
-    id: 'g-5',
-    src: '/src/assets/images/arena_prime_smash_sunset_1784290023226.jpg',
-    alt: 'Jogador em salto e smash incrível sob o pôr do sol',
-    category: 'sports',
-    title: 'Smash sob o Pôr do Sol'
-  },
-  {
-    id: 'g-6',
-    src: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1200&auto=format&fit=crop',
-    alt: 'Grupo de atletas reunidos celebrando torneio de vôlei de areia',
-    category: 'sports',
-    title: 'Nossa Galera na Areia'
-  },
-  {
-    id: 'g-7',
-    src: '/src/assets/images/arena_prime_restaurant_1784287646644.jpg',
-    alt: 'Nossas deliciosas porções rústicas do restaurante',
-    category: 'food',
-    title: 'Porção Gourmet Arena'
-  },
-  {
-    id: 'g-8',
-    src: 'https://images.unsplash.com/photo-1510127008689-419b7b7b3c8a?q=80&w=1200&auto=format&fit=crop',
-    alt: 'Porção de frango crocante com cerveja',
-    category: 'food',
-    title: 'Petiscos & Chopp Gelado'
-  },
-  {
-    id: 'g-9',
-    src: 'https://images.unsplash.com/photo-1605497746444-ac9dbd39f69c?q=80&w=1200&auto=format&fit=crop',
-    alt: 'Taça de drinks tropicais coloridos',
-    category: 'food',
-    title: 'Coquetéis Refrescantes'
-  }
+    
 ];
 
 export const COURTS: Court[] = [
