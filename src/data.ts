@@ -16,7 +16,7 @@ export const COURTS: Court[] = [
   },
   {
     id: 'court-2',
-    name: 'Quadra 2 (Do Lado Direito da Quadra 1)',
+    name: 'Quadra 2 (Do Lado Direito da Quadra 1 )',
     type: 'sand',
     sports: ['Beach Tennis', 'Vôlei de Praia', 'Futvôlei'],
     description: 'Quadra ideal para treinos e partidas, cercada por rede de proteção e com drenagem de última geração.',
