@@ -130,17 +130,12 @@ export default function App() {
   }, []);
 
   const handleGoogleLogin = async () => {
-    try {
-      const result = await googleSignIn();
-      if (result) {
-        setGoogleUser(result.user);
-        setGoogleToken(result.accessToken);
-        await loadAllData();
-      }
-    } catch (err) {
-      console.error('Failed to sign in with Google OAuth:', err);
-    }
-  };
+  try {
+    await googleSignIn();
+  } catch (err) {
+    console.error('Failed to sign in with Google OAuth:', err);
+  }
+};
 
   const handleGoogleLogout = async () => {
     try {
