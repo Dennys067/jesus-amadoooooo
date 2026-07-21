@@ -8,21 +8,6 @@ export const initAuth = (
   onAuthSuccess?: (user: GoogleUser, token: string) => void,
   onAuthFailure?: () => void
 ) => {
-  // 1. Check for mock user in sessionStorage first
-  const mockUserStr = sessionStorage.getItem('ap_mock_user');
-  const savedToken = sessionStorage.getItem('ap_temp_at');
-  if (mockUserStr && savedToken) {
-    try {
-      const user = JSON.parse(mockUserStr) as GoogleUser;
-      if (onAuthSuccess) {
-        onAuthSuccess(user, savedToken);
-      }
-      return () => {};
-    } catch (e) {
-      // Ignore parsing error
-    }
-  }
-
   if (!supabase) {
     if (onAuthFailure) onAuthFailure();
     return () => {};
@@ -65,6 +50,10 @@ export const initAuth = (
 // Sign in with Google (via Supabase)
 export const googleSignIn = async (): Promise<{ user: GoogleUser; accessToken: string } | null> => {
   if (!isSupabaseConfigured || !supabase) {
+    console.warn("Supabase não configurado. Configure as chaves no arquivo .env");
+    return null;
+  }  
+  /*if (!isSupabaseConfigured || !supabase) {
     // Elegant developer mock fallback if Supabase keys are not set yet
     const mockUser: GoogleUser = {
       uid: 'guest-admin',
@@ -75,7 +64,7 @@ export const googleSignIn = async (): Promise<{ user: GoogleUser; accessToken: s
     const mockToken = 'mock-google-token';
     sessionStorage.setItem('ap_temp_at', mockToken);
     sessionStorage.setItem('ap_mock_user', JSON.stringify(mockUser));
-    return { user: mockUser, accessToken: mockToken };
+    return { user: mockUser, accessToken: mockToken };*/
   }
 
   // Real Supabase OAuth flow
