@@ -7,7 +7,7 @@ export const INITIAL_GALLERY: GalleryItem[] = [
 export const COURTS: Court[] = [
   {
     id: 'court-1',
-    name: 'Quadra 1 (Perto da Cozinha)',
+    name: 'Quadra 1 (Perto da Cozinha )',
     type: 'sand',
     sports: ['Beach Tennis', 'Vôlei de Praia', 'Futvôlei'],
     description: 'Nossa quadra principal com dimensões oficiais, areia super fina tratada e iluminação de LED profissional para jogos noturnos.',
