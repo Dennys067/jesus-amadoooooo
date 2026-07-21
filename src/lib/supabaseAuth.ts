@@ -80,12 +80,15 @@ export const googleSignIn = async (): Promise<{ user: GoogleUser; accessToken: s
 
   // Real Supabase OAuth flow
   const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      scopes: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/forms.body https://www.googleapis.com/auth/forms.responses.readonly',
-      redirectTo: window.location.origin,
+  provider: 'google',
+  options: {
+    scopes: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive',
+    redirectTo: window.location.origin,
+    queryParams: {
+      prompt: 'select_account',
     },
-  });
+  },
+});
 
   if (error) {
     console.error('Supabase Google Sign-In error:', error);
